@@ -1,0 +1,651 @@
+---
+title: "GWAS Analysis Crypto Replication Series"
+output:
+  html_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+getwd()
+```
+
+# Check Heterozygosity and Call rate
+
+## Run these PLINK commands
+
+#### Clean data and prune Hardy-Weinberg Outliers
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --file GSA2016_357_025 --geno 0.2 --maf 0.05 --hwe 0.001  --make-bed --out crypto_rep_clean
+
+These samples had gender problems as had been incorretly assigned on the database. These have been corretced in FAM file now
+
+## 44  HJHB027 HJHB027      1      2 PROBLEM -0.009479
+## 101 HJHA041 HJHA041      2      1 PROBLEM  0.974100
+## 108 HJHB024 HJHB024      1      2 PROBLEM -0.024620
+## 180 HJHB031 HJHB031      2      1 PROBLEM  0.977100
+
+These three samples TMHP002, HJHP009 and HJHP003 have doubts are to be removed before association analysis.
+
+### update ID/SEX/Phenotype/data (FAM file) as per the information of Rae on the 20th March 2019.Recoded by Alan for PLINK format (1=Male; 2=Female; 1=Control; 2=Case)
+
+HJHP001	HJHP001	0	0	2	2
+HJHB028	HJHB028	0	0	2	1
+TMHP007	TMHP007	0	0	1	2
+HJHP047	HJHP047	0	0	2	2
+HJHB035	HJHB035	0	0	2	1
+HJHA010	HJHA010	0	0	1	1
+HJHB029	HJHB029	0	0	1	1
+TMHA004	TMHA004	0	0	2	1
+HJHA030	HJHA030	0	0	1	1
+HJHP065	HJHP065	0	0	2	2
+HJHP007	HJHP007	0	0	2	2
+HJHB023	HJHB023	0	0	1	1
+HJHA048	HJHA048	0	0	1	1
+HJHB010	HJHB010	0	0	1	1
+HJHA056	HJHA056	0	0	1	1
+HJHP024	HJHP024	0	0	1	2
+HJHA002	HJHA002	0	0	2	1
+TMHP010	TMHP010	0	0	2	2
+HJHP030	HJHP030	0	0	1	2
+HJHP049	HJHP049	0	0	1	2
+HJHA044	HJHA044	0	0	1	1
+HJHB004	HJHB004	0	0	1	1
+HJHB049	HJHB049	0	0	1	1
+HJHP014	HJHP014	0	0	1	2
+HJHA029	HJHA029	0	0	2	1
+HJHP067	HJHP067	0	0	2	2
+HJHP019	HJHP019	0	0	1	2
+HJHP040	HJHP040	0	0	1	1
+HJHB043	HJHB043	0	0	1	1
+TMHP002	TMHP002	0	0	2	2
+HJHP061	HJHP061	0	0	1	2
+HJHP028	HJHP028	0	0	1	2
+HJHP006	HJHP006	0	0	1	2
+HJHB032	HJHB032	0	0	1	1
+TMHP006	TMHP006	0	0	2	2
+HJHP057	HJHP057	0	0	1	2
+HJHP043	HJHP043	0	0	2	2
+HJHA012	HJHA012	0	0	1	1
+HJHA052	HJHA052	0	0	1	1
+TMHA005	TMHA005	0	0	2	1
+HJHA027	HJHA027	0	0	2	1
+HJHP044	HJHP044	0	0	1	2
+HJHP009	HJHP009	0	0	1	2
+HJHB027	HJHB027	0	0	2	1
+TMHP011	TMHP011	0	0	2	2
+HJHB012	HJHB012	0	0	1	1
+HJHA057	HJHA057	0	0	2	1
+TMHA008	TMHA008	0	0	1	1
+HJHA003	HJHA003	0	0	2	1
+HJHA035	HJHA035	0	0	1	1
+TMHA009	TMHA009	0	0	2	1
+HJHP048	HJHP048	0	0	1	2
+HJHB042	HJHB042	0	0	2	2
+HJHB006	HJHB006	0	0	2	1
+HJHB054	HJHB054	0	0	1	1
+TMHA006	TMHA006	0	0	2	1
+HJHA031	HJHA031	0	0	2	1
+HJHA026	HJHA026	0	0	1	1
+HJHP020	HJHP020	0	0	1	2
+HJHP035	HJHP035	0	0	2	1
+HJHB048	HJHB048	0	0	2	1
+TMHP004	TMHP004	0	0	1	2
+HJHP062	HJHP062	0	0	1	2
+HJHB017	HJHB017	0	0	1	1
+HJHP002	HJHP002	0	0	1	2
+TMHB002	TMHB002	0	0	1	1
+HJHA028	HJHA028	0	0	1	1
+HJHA064	HJHA064	0	0	2	1
+HJHA042	HJHA042	0	0	2	1
+HJHA013	HJHA013	0	0	2	1
+HJHB030	HJHB030	0	0	1	1
+TMHB004	TMHB004	0	0	1	1
+HJHB022	HJHB022	0	0	1	1
+HJHP066	HJHP066	0	0	2	2
+HJHP010	HJHP010	0	0	1	2
+HJHP038	HJHP038	0	0	1	2
+HJHB047	HJHB047	0	0	2	1
+HJHB013	HJHB013	0	0	1	1
+HJHA059	HJHA059	0	0	2	1
+TMHA007	TMHA007	0	0	1	1
+HJHA019	HJHA019	0	0	2	1
+HJHP046	HJHP046	0	0	2	1
+HJHB002	HJHB002	0	0	1	1
+HJHP036	HJHP036	0	0	2	2
+HJHB040	HJHB040	0	0	2	1
+HJHB005	HJHB005	0	0	1	1
+HJHA053	HJHA053	0	0	1	1
+TMHB006	TMHB006	0	0	2	1
+HJHA022	HJHA022	0	0	1	1
+HJHP069	HJHP069	0	0	2	2
+HJHP021	HJHP021	0	0	1	2
+HJHP041	HJHP041	0	0	2	2
+HJHB026	HJHB026	0	0	1	1
+TMHP005	TMHP005	0	0	1	2
+HJHA061	HJHA061	0	0	1	1
+HJHP026	HJHP026	0	0	1	2
+HJHP005	HJHP005	0	0	1	2
+HJHA024	HJHA024	0	0	2	1
+HJHA025	HJHA025	0	0	2	1
+HJHA038	HJHA038	0	0	1	1
+HJHA041	HJHA041	0	0	1	1
+HJHA015	HJHA015	0	0	1	1
+HJHA054	HJHA054	0	0	1	1
+TMHB003	TMHB003	0	0	1	1
+TMHB010	TMHB010	0	0	2	1
+HJHB036	HJHB036	0	0	2	1
+HJHP017	HJHP017	0	0	2	2
+HJHB024	HJHB024	0	0	2	1
+HJHP050	HJHP050	0	0	2	2
+HJHB014	HJHB014	0	0	2	1
+HJHA055	HJHA055	0	0	1	1
+TMHB005	TMHB005	0	0	1	1
+HJHB021	HJHB021	0	0	2	1
+HJHB063	HJHB063	0	0	1	1
+HJHA004	HJHA004	0	0	2	1
+HJHP037	HJHP037	0	0	1	2
+HJHA046	HJHA046	0	0	2	1
+HJHB007	HJHB007	0	0	2	1
+HJHB046	HJHB046	0	0	2	1
+HJHB011	HJHB011	0	0	2	1
+HJHB018	HJHB018	0	0	2	1
+HJHP003	HJHP003	0	0	1	2
+HJHA007	HJHA007	0	0	1	1
+HJHP042	HJHP042	0	0	2	2
+HJHP053	HJHP053	0	0	2	2
+TMHA001	TMHA001	0	0	2	1
+HJHB057	HJHB057	0	0	2	1
+HJHP027	HJHP027	0	0	1	2
+HJHA001	HJHA001	0	0	1	1
+HJHP034	HJHP034	0	0	2	1
+HJHA020	HJHA020	0	0	2	1
+HJHB051	HJHB051	0	0	1	1
+HJHA040	HJHA040	0	0	1	1
+HJHA017	HJHA017	0	0	2	1
+HJHP054	HJHP054	0	0	2	2
+TMHB007	TMHB007	0	0	2	1
+HJHP031	HJHP031	0	0	2	2
+HJHP032	HJHP032	0	0	2	2
+HJHP015	HJHP015	0	0	2	2
+HJHP039	HJHP039	0	0	2	2
+HJHA037	HJHA037	0	0	1	1
+HJHB016	HJHB016	0	0	1	1
+HJHP058	HJHP058	0	0	1	2
+TMHB001	TMHB001	0	0	1	1
+HJHA032	HJHA032	0	0	2	1
+HJHB058	HJHB058	0	0	1	1
+HJHP008	HJHP008	0	0	2	2
+HJHA034	HJHA034	0	0	2	1
+HJHB038	HJHB038	0	0	2	1
+HJHB008	HJHB008	0	0	1	1
+HJHB053	HJHB053	0	0	2	1
+HJHP022	HJHP022	0	0	2	2
+HJHA033	HJHA033	0	0	1	1
+HJHA016	HJHA016	0	0	1	1
+HJHA008	HJHA008	0	0	1	1
+HJHB025	HJHB025	0	0	1	1
+HJHA047	HJHA047	0	0	1	1
+TMHA002	TMHA002	0	0	2	1
+HJHA058	HJHA058	0	0	2	1
+HJHA023	HJHA023	0	0	1	1
+HJHA006	HJHA006	0	0	1	1
+HJHB020	HJHB020	0	0	1	1
+HJHP029	HJHP029	0	0	2	2
+HJHA060	HJHA060	0	0	1	1
+HJHP033	HJHP033	0	0	2	2
+HJHB001	HJHB001	0	0	1	1
+HJHA050	HJHA050	0	0	2	1
+HJHB015	HJHB015	0	0	2	1
+TMHP003	TMHP003	0	0	1	2
+HJHP016	HJHP016	0	0	2	2
+HJHP018	HJHP018	0	0	1	2
+HJHB034	HJHB034	0	0	2	1
+HJHB044	HJHB044	0	0	1	1
+TMHP001	TMHP001	0	0	2	2
+HJHP060	HJHP060	0	0	2	2
+HJHP025	HJHP025	0	0	2	2
+HJHB019	HJHB019	0	0	2	1
+HJHP064	HJHP064	0	0	2	2
+HJHP004	HJHP004	0	0	1	1
+HJHB031	HJHB031	0	0	1	1
+HJHA045	HJHA045	0	0	1	1
+HJHB009	HJHB009	0	0	1	1
+HJHB045	HJHB045	0	0	1	1
+HJHA021	HJHA021	0	0	1	1
+HJHB033	HJHB033	0	0	2	1
+HJHA009	HJHA009	0	0	1	1
+HJHA036	HJHA036	0	0	2	1
+HJHA049	HJHA049	0	0	2	1
+TMHA003	TMHA003	0	0	1	1
+HJHA063	HJHA063	0	0	2	1
+HJHP011	HJHP011	0	0	2	2
+
+
+#### Calculate Sample call rate
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_clean --missing -out Genotype_rates
+
+#### Calculate heterozygosity
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_clean --het --out HetRates
+
+#### Heterozygosity Vs % Missingness visialisations
+#### Read in the genotype missingness data
+```{r}
+Call_rates <- as.data.frame(read.table("Genotype_rates.imiss", header = TRUE))
+```
+
+#### Read in the heterozygosity data
+```{r}
+HET_data <- as.data.frame(read.table("HetRates.het", header = TRUE))
+```
+
+#### Plot the % missingness versus the Heterozygosity rate (F score)
+
+```{r}
+plot(x = Call_rates$F_MISS, y = HET_data$F, xlab = "% missingness", ylab = "Heterozygosity", col = 4)
+```
+
+Generally excellent call rates. One sample; HJHA056 a bit lower than the others.
+
+
+# Check Sex
+
+## Run these PLINK commands
+
+#### Clean data
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --file GSA2016_357_025 --geno 0.2 --maf 0.05  --make-bed --out crypto_rep_for_sex_check
+
+### update (again) ID/SEX/Phenotype/data (FAM file) as per the information of Rae on the 11th March 2019.Recoded by Alan for PLINK format (1=Male; 2=Female; 1=Control; 2=Case)
+
+#### check-sex
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_for_sex_check --check-sex 0.2 0.7 --out crypto_SexCheck
+
+#### Read in the sex check data
+```{r}
+sex_data <- as.data.frame(read.table("crypto_SexCheck.sexcheck", header = TRUE))
+```
+
+#### Plot a histogram of the distributions of X chromosome F scores 
+```{r}
+hist(sex_data$F, col = "blue", xlab = "F-Score", main = "SexCheck")
+```
+
+#### Identify problem or wrong gender matching samples
+
+```{r}
+Gendermissmatches <- subset(sex_data, STATUS=="PROBLEM")
+```
+
+```{r}
+Gendermissmatches
+```
+
+
+As expected, there are 3 problematic samples from the SexCheck. TMHP002, HJHP009 and HJHP003 must be removed before doing the GWAS. 
+
+HJHA004 is boderline, but clearly a female and I would include in the present study.
+
+# Principle Component Analysis
+
+## Run these PLINK commands
+Here we are merging our GWAS data with three Hapmap populations; CEU; Yoruban and HCB. Go back to the files that have have been pruned for HWE deviators.
+
+#### extract_hapmap_snps
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_clean --extract /homes/athosnew/Genetics_Centre_Bioinformatics/resourses/Genome_reference_files/hapmap3r2_CEU.CHB.JPT.YRI.no-at-cg-snps.txt --make-bed --out crypto_rep_clean.hapmap-snps
+
+#### remove_multi-alleleSNPS
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_clean.hapmap-snps --bmerge /homes/athosnew/Genetics_Centre_Bioinformatics/resourses/Genome_reference_files/hapmap3r2_CEU.CHB.JPT.YRI.founders.no-at-cg-snps_hg19_bad_snps_removed
+
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_clean.hapmap-snps --exclude plink.missnp --make-bed --out crypto_rep_clean.hapmap-snps-snps2
+
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_clean.hapmap-snps-snps2 --bmerge /homes/athosnew/Genetics_Centre_Bioinformatics/resourses/Genome_reference_files/hapmap3r2_CEU.CHB.JPT.YRI.founders.no-at-cg-snps_hg19_bad_snps_removed --out crypto_rep_clean_for_PCA
+
+#### remove missing data here ### very important !!!!
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_clean_for_PCA --geno 0.05 --make-bed --out crypto_rep_clean_for_PCA_genopruned
+
+#### GCTA_PCA_analysis
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/gcta_1.91.5beta/gcta64 --bfile crypto_rep_clean_for_PCA_genopruned --make-grm --autosome --thread-num 10 --out crypto_rep_clean_for_PCA_genopruned_matrix
+
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/gcta_1.91.5beta/gcta64 --grm crypto_rep_clean_for_PCA_genopruned_matrix --pca 4 --out crypto_rep_clean_for_PCA_genopruned_matrix_HapMap_PCA
+
+
+#### Read in .csv file from GCTA package
+```{r}
+PCAdata <- as.data.frame(read.table("crypto_rep_clean_for_PCA_genopruned_matrix_HapMap_PCA.eigenvec", header = FALSE))
+```
+
+#### View the top of the table
+```{r}
+head(PCAdata)
+```
+
+#### Now plot PC1 and PC2
+
+```{r}
+plot(x = PCAdata$V3, y = PCAdata$V4,  xlab = "PC1", ylab = "PC2")
+```
+
+Or the file can be modified to have another column so that each population group is assigned a number so that the scatter plot can be colour co-ordinated
+
+```{r}
+PCAdata_mod <- as.data.frame(read.table("crypto_rep_clean_for_PCA_genopruned_matrix_HapMap_PCA.eigenvec_mod", header = FALSE))
+```
+
+```{r}
+plot(x = PCAdata_mod$V3, y = PCAdata_mod$V4, main = "PCA",  xlab = "PC1", ylab = "PC2", col = PCAdata_mod$V7)
+```
+
+# Principle Component Analysis of Cases and Controls and the Yorubans
+
+exclude the HCB and the CEU population and re evaluate the PCA - also colour code the cases and controls differently.
+
+#### In plink retain only samples that we want
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_clean_for_PCA_genopruned --keep my_keepers.txt --make-bed --out crypto_rep_clean_for_PCA_genopruned_case_control
+
+
+#### GCTA_PCA_analysis_again
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/gcta_1.91.5beta/gcta64 --bfile crypto_rep_clean_for_PCA_genopruned_case_control --make-grm --autosome --thread-num 10 --out crypto_rep_clean_for_PCA_genopruned_case_control_matrix
+
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/gcta_1.91.5beta/gcta64 --grm crypto_rep_clean_for_PCA_genopruned_case_control_matrix --pca 4 --out crypto_rep_clean_for_PCA_genopruned_matrix_HapMap_PCA_case_control
+
+
+```{r}
+PCAdata_case_controls_mod <- as.data.frame(read.table("crypto_rep_clean_for_PCA_genopruned_matrix_HapMap_PCA_case_control.eigenvec_mod", header = FALSE))
+```
+
+```{r}
+plot.new()
+```
+
+```{r}
+plot(x = PCAdata_case_controls_mod$V3, y = PCAdata_case_controls_mod$V4,  xlab = "PC1", ylab = "PC2", col = PCAdata_case_controls_mod$V7)
+legend(x="bottom", legend = c("cases", "controls", "Yoruba"), col = c("red", "green", "blue" ), pch = 1)
+```
+
+Cases and controls seem to cluster together, but there is a bit of a spread. Should we include PCAs as covariates in the analysis?
+
+# Principle Component Analysis of Cases and Controls ONLY
+
+exclude all HapMap populations and re evaluate the PCA - also colour code the cases and controls differently.
+
+#### In plink retain only samples that we want
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_clean_for_PCA_genopruned --keep my_keepers1.txt --make-bed --out crypto_rep_clean_for_PCA_genopruned_case_control1
+
+
+#### GCTA_PCA_analysis_again
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/gcta_1.91.5beta/gcta64 --bfile crypto_rep_clean_for_PCA_genopruned_case_control1 --make-grm --autosome --thread-num 10 --out crypto_rep_clean_for_PCA_genopruned_case_control1_matrix
+
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/gcta_1.91.5beta/gcta64 --grm crypto_rep_clean_for_PCA_genopruned_case_control1_matrix --pca 4 --out crypto_rep_clean_for_PCA_genopruned_matrix_HapMap_PCA_case_control1
+
+
+```{r}
+
+PCAdata_case_controls_mod1 <- as.data.frame(read.table("crypto_rep_clean_for_PCA_genopruned_matrix_HapMap_PCA_case_control1.eigenvec_mod", header = FALSE))
+```
+
+
+```{r}
+plot(x = PCAdata_case_controls_mod1$V3, y = PCAdata_case_controls_mod1$V4,  xlab = "PC1", ylab = "PC2", col = PCAdata_case_controls_mod1$V7)
+legend(x="bottom", legend = c("cases", "controls"), col = c("red", "green"), pch = 1)
+```
+
+
+Here we will check for outliers:
+
+
+```{r}
+PCAdata_case_controls_mod1[which(PCAdata_case_controls_mod1$V3> 0.4),]
+```
+
+
+```{r}
+PCAdata_case_controls_mod1[which(PCAdata_case_controls_mod1$V3< -0.2),]
+```
+
+
+Thus we will need to remove the follwoing outlier samples:
+
+HJHB005 (control)
+TMHP002 (case)
+HJHB006 (control)
+TMHP001 (case)
+
+# Checking Sample relatedness
+
+
+
+####prune_LD_SNPS
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_clean --indep-pairwise 50 5 0.5 --out crypto_rep_clean_prune
+####use only RS numbers here!
+awk '$1 ~ /^rs/' crypto_rep_clean_prune.prune.in > crypto_rep_clean_prune.prune.in1
+
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_clean --extract crypto_rep_clean_prune.prune.in1 --make-bed --out crypto_rep_clean_PRUNED
+
+####IBD calculation
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_clean_PRUNED --genome --min 0.06 --out crypto_rep_clean_PRUNED_IBD
+
+```{r}
+Identity_by_descent <- as.data.frame(read.table("crypto_rep_clean_PRUNED_IBD.genome", header = TRUE))
+```
+
+```{r}
+Identity_by_descent
+```
+
+These sample pairs are duplicates of one another : IBD = 1 
+
+TMHP002	HJHB005
+HJHB006	TMHP001
+
+one (or all) should be removed from the study
+
+
+# merging the data with the original series
+
+#### Merge chromosome PLINK files from Schichina
+
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --merge-list files_to_merge.txt --make-bed --out original_crypto_series --allow-no-sex
+
+#### first pass to merge with new dataset
+
+crypto_rep_clean
+original_crypto_series
+
+
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_clean --bmerge original_crypto_series --make-bed --out phase1_2_merged
+
+Error: 17512 variants with 3+ alleles present.
+* If you believe this is due to strand inconsistency, try --flip with phase1_2_merged-merge.missnp.
+
+#### fix strand errors
+
+To check for strand errors, you can do a 'trial flip'. Note the number of merge errors, use --flip with one of the source files and the .missnp file, and retry the merge. If most of the errors disappear, you probably do have strand errors, and you can use --flip on the second .missnp file to 'un-flip' any other errors. For example:
+
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_clean --flip phase1_2_merged-merge.missnp --make-bed --out crypto_rep_clean_trial
+
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile original_crypto_series --bmerge crypto_rep_clean_trial --make-bed --out merged_trial --allow-no-sex
+
+
+No further missnips were identified, but we need to look for C/G A/T errors with flipscan.
+
+#### remove possible problematic C/G A/T snps
+
+If the first .missnp file did contain strand errors, it probably did not contain all of them. After you're done with the basic merge, use --flip-scan to catch the A/T and C/G SNP flips that slipped through (using --make-pheno to temporarily redefine 'case' and 'control' if necessary):
+
+
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile original_crypto_series --flip-scan --out original_crypto_series
+
+386688 MB RAM detected; reserving 193344 MB for main workspace.
+244330 variants loaded from .bim file.
+553 people (189 males, 335 females, 29 ambiguous) loaded from .fam.
+Ambiguous sex IDs written to original_crypto_series.nosex .
+553 phenotype values loaded from .fam.
+Warning: Ignoring phenotypes of missing-sex samples.  If you don't want those
+phenotypes to be ignored, use the --allow-no-sex flag.
+Using 1 thread (no multithreaded calculations invoked).
+Before main variant filters, 553 founders and 0 nonfounders present.
+Calculating allele frequencies... done.
+Total genotyping rate is 0.998046.
+244330 variants and 553 people pass filters and QC.
+Among remaining phenotypes, 243 are cases and 281 are controls.  (29 phenotypes
+are missing.)
+--flip-scan: 0 variants with at least one negative LD match.
+Report written to original_crypto_series.flipscan .
+
+
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_clean --flip-scan --out flipscan_crypto_clean
+
+386688 MB RAM detected; reserving 193344 MB for main workspace.
+305569 variants loaded from .bim file.
+191 people (99 males, 92 females) loaded from .fam.
+191 phenotype values loaded from .fam.
+Using 1 thread (no multithreaded calculations invoked).
+Before main variant filters, 191 founders and 0 nonfounders present.
+Calculating allele frequencies... done.
+Warning: 7928 het. haploid genotypes present (see flipscan_crypto_clean.hh );
+many commands treat these as missing.
+Total genotyping rate is 0.998172.
+305569 variants and 191 people pass filters and QC.
+Among remaining phenotypes, 63 are cases and 128 are controls.
+--flip-scan: 370 variants with at least one negative LD match.
+Report written to flipscan_crypto_clean.flipscan .
+
+Need to remove the variants that have a negative LD match detected with flipscan (flipscan_crypto_clean.flipscan)
+
+As C/G and A/T snps may still pose a problem, identify the C/G and A/T snps and remove them from the final dataset:
+(C_G_and_A_T_snp_consider_take away.txt)
+
+
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile original_crypto_series --bmerge crypto_rep_clean_trial --make-bed --out merged_tmp --allow-no-sex
+
+
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile merged_tmp --exclude C_G_and_A_T_snp_consider_take away.txt --make-bed --out crypto_merged_for_imputation  --allow-no-sex
+
+merged data should now bw fine and ready for analysis and imputation
+
+#### PCA for merged data
+
+#### extract_hapmap_snps
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_merged_for_imputation --extract /homes/athosnew/Genetics_Centre_Bioinformatics/resourses/Genome_reference_files/hapmap3r2_CEU.CHB.JPT.YRI.no-at-cg-snps.txt --make-bed --out crypto_rep_merged_clean.hapmap-snps
+
+#### remove_multi-alleleSNPS
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_merged_clean.hapmap-snps --bmerge /homes/athosnew/Genetics_Centre_Bioinformatics/resourses/Genome_reference_files/hapmap3r2_CEU.CHB.JPT.YRI.founders.no-at-cg-snps_hg19_bad_snps_removed
+
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_merged_clean.hapmap-snps --exclude plink.missnp --make-bed --out crypto_rep_merged_clean.hapmap-snps-snps2
+
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_merged_clean.hapmap-snps-snps2 --bmerge /homes/athosnew/Genetics_Centre_Bioinformatics/resourses/Genome_reference_files/hapmap3r2_CEU.CHB.JPT.YRI.founders.no-at-cg-snps_hg19_bad_snps_removed --out crypto_rep_merged_clean_for_PCA
+
+#### remove missing data here ### very important !!!!
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_merged_clean_for_PCA --geno 0.05 --make-bed --out crypto_rep_merged_clean_for_PCA_genopruned
+
+
+#### In plink retain only samples that we want
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_merged_clean_for_PCA_genopruned --keep my_keepers.txt --make-bed --out crypto_rep_merged_clean_for_PCA_genopruned1
+
+#### GCTA_PCA_analysis
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/gcta_1.91.5beta/gcta64 --bfile crypto_rep_merged_clean_for_PCA_genopruned1 --make-grm --autosome --thread-num 10 --out crypto_rep_merged_clean_for_PCA_genopruned_matrix
+
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/gcta_1.91.5beta/gcta64 --grm crypto_rep_merged_clean_for_PCA_genopruned_matrix --pca 4 --out crypto_rep_merged_clean_for_PCA_genopruned_matrix_HapMap_PCA
+
+#### Read in .csv file from GCTA package
+```{r}
+setwd("W:/Alan/crypto_GWAS/Merged_PCA")
+PCAdata_all_merged <- as.data.frame(read.table("crypto_rep_merged_clean_for_PCA_genopruned_matrix_HapMap_PCA.eigenvec_mod", header = FALSE))
+```
+
+
+```{r}
+plot(x = PCAdata_all_merged$V3, y = PCAdata_all_merged$V4,  xlab = "PC1", ylab = "PC2", col = PCAdata_all_merged$V7)
+legend(x="bottom", legend = c("batch1", "batch2", "Yoruba"), col = c("red", "green", "blue" ), pch = 1)
+```
+
+#### And now plot with all worldwide populations:
+
+#### remove missing data here ### very important !!!!
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_merged_clean_for_PCA --geno 0.05 --make-bed --out crypto_rep_merged_clean_for_PCA_genopruned
+
+#### GCTA_PCA_analysis
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/gcta_1.91.5beta/gcta64 --bfile crypto_rep_merged_clean_for_PCA_genopruned --make-grm --autosome --thread-num 10 --out crypto_rep_merged_clean_for_PCA_genopruned_matrix
+
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/gcta_1.91.5beta/gcta64 --grm crypto_rep_merged_clean_for_PCA_genopruned_matrix --pca 4 --out crypto_rep_merged_clean_for_PCA_genopruned_matrix_HapMap_PCA_all
+
+#### Read in .csv file from GCTA package
+```{r}
+setwd("W:/Alan/crypto_GWAS/Merged_PCA")
+PCAdata_all_merged_allpops <- as.data.frame(read.table("crypto_rep_merged_clean_for_PCA_genopruned_matrix_HapMap_PCA_all.eigenvec_mod", header = FALSE))
+```
+
+```{r}
+plot(x = PCAdata_all_merged_allpops$V3, y = PCAdata_all_merged_allpops$V4,  xlab = "PC1", ylab = "PC2", col = PCAdata_all_merged_allpops$V7)
+```
+
+#### ..and finally just our two cohorts:
+
+
+#### remove missing data here ### very important !!!!
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_merged_clean_for_PCA --geno 0.05 --make-bed --out crypto_rep_merged_clean_for_PCA_genopruned
+
+
+#### In plink retain only samples that we want
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_merged_clean_for_PCA_genopruned --keep my_keepers1.txt --make-bed --out crypto_rep_merged_clean_for_PCA_genopruned2
+
+#### GCTA_PCA_analysis
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/gcta_1.91.5beta/gcta64 --bfile crypto_rep_merged_clean_for_PCA_genopruned2 --make-grm --autosome --thread-num 10 --out crypto_rep_merged_clean_for_PCA_genopruned_matrix2
+
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/gcta_1.91.5beta/gcta64 --grm crypto_rep_merged_clean_for_PCA_genopruned_matrix2 --pca 4 --out crypto_rep_merged_clean_for_PCA_genopruned_matrix_HapMap_PCA2
+
+
+```{r}
+setwd("W:/Alan/crypto_GWAS/Merged_PCA")
+PCAdata_all_merged_only_cohorts <- as.data.frame(read.table("crypto_rep_merged_clean_for_PCA_genopruned_matrix_HapMap_PCA2.eigenvec_mod", header = FALSE))
+```
+
+
+```{r}
+plot(x = PCAdata_all_merged_only_cohorts$V3, y = PCAdata_all_merged_only_cohorts$V4,  xlab = "PC1", ylab = "PC2", col = PCAdata_all_merged_only_cohorts$V7)
+```
+
+#### BATCH 2 GWAS; Decide on final inclusions for GWAS
+
+For batch2 gwas alone, remove the following samples:
+
+TMHP002
+HJHP009
+HJHP003
+HJHB005
+HJHB006
+TMHP001
+
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_clean --remove myRemovals.txt --make-bed --out crypto_replication_for_association
+
+191 people (99 males, 92 females) loaded from .fam.
+191 phenotype values loaded from .fam.
+--remove: 185 people remaining.
+Using 1 thread (no multithreaded calculations invoked).
+Before main variant filters, 185 founders and 0 nonfounders present.
+Calculating allele frequencies... done.
+Warning: 7645 het. haploid genotypes present (see
+crypto_replication_for_association.hh ); many commands treat these as missing.
+Total genotyping rate in remaining samples is 0.998502.
+305569 variants and 185 people pass filters and QC.
+Among remaining phenotypes, 59 are cases and 126 are controls.
+--make-bed to crypto_replication_for_association.bed +
+crypto_replication_for_association.bim + crypto_replication_for_association.fam
+... done.
+
+
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_replication_for_association --assoc --out association_reults 
+
+
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_replication_for_association --model --out association_reults_models 
+
+
+/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_replication_for_association --assoc --adjust --qq-plot --out crypto_replication_for_association_forQQ
+
+
+
+
+
+
