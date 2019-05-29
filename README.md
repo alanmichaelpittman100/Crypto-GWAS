@@ -3,7 +3,7 @@
 ### scripts used to analysis crypto host-pathogen GWAS
 
 
-#### Crypto SNP array data were prepared for imputation as per this protocol:
+Crypto SNP array data were prepared for imputation as per this protocol:  
 
 https://github.com/alanmichaelpittman100/GWAS-Imputation-Protocol-  
 
