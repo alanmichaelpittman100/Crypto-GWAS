@@ -33,3 +33,7 @@ run_Post_impuation_quality_control_b2_cat_vcfs.sh
 
 ### Merged VCF was converted to BIMBAM format:  
 
+run_vcf_to_BIMBAM.sh  
+
+### Association analysis in Gemma was performed in the folowing way  
+
