@@ -1,0 +1,67 @@
+---
+title: "GWAS Analysis Crypto Replication Series"
+output:
+  html_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+getwd()
+```
+
+```{r}
+
+```
+
+
+```{r}
+setwd("/homes/athosnew/Alan/crypto_GWAS/Take2/Sample_QC_PCAs")
+```
+
+
+#three hapmap, B1 and B2
+
+```{r}
+PCAdata_all_merged <- as.data.frame(read.table("crypto_rep_merged_clean_for_PCA_genopruned_matrix_HapMap_PCA_all.eigenvec_mod", header = FALSE))
+```
+
+```{r}
+plot(x = PCAdata_all_merged$V3, y = PCAdata_all_merged$V4,  xlab = "PC1", ylab = "PC2", col = PCAdata_all_merged$V7)
+legend(x="bottom", legend = c("CEU", "HCB", "Yoruba", "B1", "B1"), col = c("black", "blue", "turquoise", "green", "red"), pch = 1)
+```
+
+
+
+```{r}
+PCAdata_B1_B2 <- as.data.frame(read.table("crypto_rep_merged_clean_for_PCA_genopruned_matrix_HapMap_PCA2.eigenvec_mod", header = FALSE))
+```
+
+
+##B1 and B2 only
+
+
+```{r}
+plot(x = PCAdata_B1_B2$V3, y = PCAdata_B1_B2$V4,  xlab = "PC1", ylab = "PC2", col = PCAdata_B1_B2$V7)
+legend(x="bottom", legend = c("B1", "B2"), col = c("red", "green"), pch = 1)
+```
+
+
+##B1 and B2 only; cases versus controls
+
+
+
+```{r}
+PCAdata_B1_B2_cases_controls <- as.data.frame(read.table("crypto_rep_merged_clean_for_PCA_genopruned_matrix_HapMap_PCA2.eigenvec_mod1", header = FALSE))
+```
+
+
+```{r}
+plot(x = PCAdata_B1_B2_cases_controls$V3, y = PCAdata_B1_B2_cases_controls$V4,  xlab = "PC1", ylab = "PC2", col = PCAdata_B1_B2_cases_controls$V7)
+legend(x="bottom", legend = c("Cases", "Controls"), col = c("red", "black"), pch = 1)
+```
+
+
