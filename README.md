@@ -35,5 +35,15 @@ run_Post_impuation_quality_control_b2_cat_vcfs.sh
 
 run_vcf_to_BIMBAM.sh  
 
-### Association analysis in Gemma was performed in the folowing way  
+### Relationship matrix was calculated in GEMMA in the folowing way:  
+
+https://github.com/genetics-statistics/GEMMA  
+
+run_Calculate_Relationship_Matrix.sh  
+
+### Association analysis in Gemma was performed in the folowing way:  
+
+https://github.com/genetics-statistics/GEMMA  
+
+
 
