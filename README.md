@@ -60,5 +60,9 @@ awk '$1 ~ /^rs/' lipoedema_CC_FOR_QC_CLEAN_prune.prune.in > lipoedema_CC_FOR_QC_
 
 https://github.com/genetics-statistics/GEMMA  
 
+1) Using 15 PCs as covariates  
 
+runAssociation_analysis_GEMMA.sh  
+
+2) Usinf 4 PCs as covariates  
 
