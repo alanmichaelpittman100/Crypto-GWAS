@@ -13,7 +13,7 @@ Crypto_GWAS_QC_V3.Rmd
 
 Crypto_GWAS_QC_PCA.Rmd  
 
-Crypto SNP array data were prepared for imputation as per this protocol:  
+### Crypto SNP array data were prepared for imputation as per this protocol:  
 
 https://github.com/alanmichaelpittman100/GWAS-Imputation-Protocol-  
 
