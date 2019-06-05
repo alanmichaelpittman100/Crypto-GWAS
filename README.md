@@ -47,8 +47,7 @@ run_Calculate_Relationship_Matrix.sh
 /homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile merged_in_plink_format --geno 0.03 --maf 0.05 --hwe 0.001 --make-bed --out merged_in_plink_format_CLEAN  
 ### prune_LD_SNPS  
 /homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile merged_in_plink_format_CLEAN --indep-pairwise 50 5 0.5 --out merged_in_plink_format_CLEAN_prune  
-### use only RS numbers here!  
-awk '$1 ~ /^rs/' lipoedema_CC_FOR_QC_CLEAN_prune.prune.in > lipoedema_CC_FOR_QC_CLEAN_prune.prune.in1
+
 /homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile merged_in_plink_format_CLEAN  --extract merged_in_plink_format_CLEAN_prune.prune.in --make-bed --out merged_in_plink_format_CLEAN_pruned  
 
 
@@ -64,5 +63,5 @@ https://github.com/genetics-statistics/GEMMA
 
 runAssociation_analysis_GEMMA.sh  
 
-2) Usinf 4 PCs as covariates  
+2) Using 4 PCs as covariates  
 
