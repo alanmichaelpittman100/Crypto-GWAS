@@ -39,8 +39,9 @@ ${vcf_concat} \
  ${OutDirDir}/chr19_excluded_low_quality.recode.vcf.gz \
  ${OutDirDir}/chr20_excluded_low_quality.recode.vcf.gz \
  ${OutDirDir}/chr21_excluded_low_quality.recode.vcf.gz \
- ${OutDirDir}/chr22_excluded_low_quality.recode.vcf.gz | gzip -c > ${OutDirDir}/All_chr_excluded_low_quality_variants_b2.vcf.gz
+ ${OutDirDir}/chr22_excluded_low_quality.recode.vcf.gz | $bgzip -c > ${OutDirDir}/All_chr_excluded_low_quality_variants_b2.vcf.gz
 
+$tabix ${OutDirDir}/All_chr_excluded_low_quality_variants_b2.vcf.gz
 
 exit
 
