@@ -43,15 +43,15 @@ run_Calculate_Relationship_Matrix.sh
 
 ### 15 PCs to act as covariates were calculated in GCTA in the folowing way: 
 
-### clean  
+#### clean  
 /homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile merged_in_plink_format --geno 0.03 --maf 0.05 --hwe 0.001 --make-bed --out merged_in_plink_format_CLEAN  
-### prune_LD_SNPS  
+#### prune_LD_SNPS  
 /homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile merged_in_plink_format_CLEAN --indep-pairwise 50 5 0.5 --out merged_in_plink_format_CLEAN_prune  
 
 /homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile merged_in_plink_format_CLEAN  --extract merged_in_plink_format_CLEAN_prune.prune.in --make-bed --out merged_in_plink_format_CLEAN_pruned  
 
 
-### GCTA_PCA_analysis
+#### GCTA_PCA_analysis
 /homes/athosnew/Genetics_Centre_Bioinformatics/resourses/gcta_1.91.5beta/gcta64 --bfile merged_in_plink_format_CLEAN_pruned --make-grm --autosome --thread-num 10 --out merged_in_plink_format_CLEAN_pruned_PCA_Matrix  
 /homes/athosnew/Genetics_Centre_Bioinformatics/resourses/gcta_1.91.5beta/gcta64 --grm merged_in_plink_format_CLEAN_pruned_PCA_Matrix --pca 15 --out merged_in_plink_format_CLEAN_pruned_PCA_Matrix_PCs
 
