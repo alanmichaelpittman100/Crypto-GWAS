@@ -8,7 +8,7 @@ bgzip="/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/tabix-0.2.6/bgzi
 vcf_concat="/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/vcftools/bin/vcf-concat"
 
 imputedVCFsDir="/homes/athosnew/Alan/Alan_Bioinformatics_Projects/imputation/imputed_files_from_Michigan_Imputation_Server_crypto_b1_clean/"
-OutDirDir="/homes/athosnew/Alan/crypto_GWAS/Take2/b2_imputed_vcfs_HRC"
+OutDirDir="/homes/athosnew/Alan/crypto_GWAS/Take2/b1_imputed_vcfs_HRC"
 
 
 chrs="22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1"
