@@ -63,5 +63,5 @@ https://github.com/genetics-statistics/GEMMA
 
 runAssociation_analysis_GEMMA.sh  
 
-2) Using 4 PCs as covariates  
+
 
