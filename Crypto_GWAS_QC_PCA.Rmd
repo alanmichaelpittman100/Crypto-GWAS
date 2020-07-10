@@ -19,7 +19,7 @@ getwd()
 
 
 ```{r}
-setwd("/homes/athosnew/Alan/crypto_GWAS/Take2/Sample_QC_PCAs")
+setwd("/Sample_QC_PCAs")
 ```
 
 
