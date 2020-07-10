@@ -1,7 +1,7 @@
 #!/bin/bash
 
-GEMMA="/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/gemma/gemma-0.98.1-linux-static "
-pheno_folder="/homes/athosnew/Alan/crypto_GWAS/Take2/Final_joint_analysis_and_results"
+GEMMA="/gemma/gemma-0.98.1-linux-static "
+pheno_folder="/results"
 
 $GEMMA \
 	-g $pheno_folder/crypto_merged_dosage.bimbam \
