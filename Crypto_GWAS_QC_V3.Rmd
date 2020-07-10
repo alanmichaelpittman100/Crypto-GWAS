@@ -225,10 +225,10 @@ HJHP011	HJHP011	0	0	2	2
 
 
 #### Calculate Sample call rate
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_clean --missing -out Genotype_rates
+./plink --bfile crypto_rep_clean --missing -out Genotype_rates
 
 #### Calculate heterozygosity
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_clean --het --out HetRates
+./plink --bfile crypto_rep_clean --het --out HetRates
 
 #### Heterozygosity Vs % Missingness visialisations
 #### Read in the genotype missingness data
@@ -255,12 +255,12 @@ Generally excellent call rates. One sample; HJHA056 a bit lower than the others.
 ## Run these PLINK commands
 
 #### Clean data
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --file GSA2016_357_025 --geno 0.2 --maf 0.05  --make-bed --out crypto_rep_for_sex_check
+./plink --file GSA2016_357_025 --geno 0.2 --maf 0.05  --make-bed --out crypto_rep_for_sex_check
 
 ### update (again) ID/SEX/Phenotype/data (FAM file) as per the information of Rae on the 11th March 2019.Recoded by Alan for PLINK format (1=Male; 2=Female; 1=Control; 2=Case)
 
 #### check-sex
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_for_sex_check --check-sex 0.2 0.7 --out crypto_SexCheck
+./plink --bfile crypto_rep_for_sex_check --check-sex 0.2 0.7 --out crypto_SexCheck
 
 #### Read in the sex check data
 ```{r}
@@ -293,22 +293,22 @@ HJHA004 is boderline, but clearly a female and I would include in the present st
 Here we are merging our GWAS data with three Hapmap populations; CEU; Yoruban and HCB. Go back to the files that have have been pruned for HWE deviators.
 
 #### extract_hapmap_snps
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_clean --extract /homes/athosnew/Genetics_Centre_Bioinformatics/resourses/Genome_reference_files/hapmap3r2_CEU.CHB.JPT.YRI.no-at-cg-snps.txt --make-bed --out crypto_rep_clean.hapmap-snps
+./plink --bfile crypto_rep_clean --extract ./Genome_reference_files/hapmap3r2_CEU.CHB.JPT.YRI.no-at-cg-snps.txt --make-bed --out crypto_rep_clean.hapmap-snps
 
 #### remove_multi-alleleSNPS
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_clean.hapmap-snps --bmerge /homes/athosnew/Genetics_Centre_Bioinformatics/resourses/Genome_reference_files/hapmap3r2_CEU.CHB.JPT.YRI.founders.no-at-cg-snps_hg19_bad_snps_removed
+./plink --bfile crypto_rep_clean.hapmap-snps --bmerge ./Genome_reference_files/hapmap3r2_CEU.CHB.JPT.YRI.founders.no-at-cg-snps_hg19_bad_snps_removed
 
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_clean.hapmap-snps --exclude plink.missnp --make-bed --out crypto_rep_clean.hapmap-snps-snps2
+./plink --bfile crypto_rep_clean.hapmap-snps --exclude plink.missnp --make-bed --out crypto_rep_clean.hapmap-snps-snps2
 
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_clean.hapmap-snps-snps2 --bmerge /homes/athosnew/Genetics_Centre_Bioinformatics/resourses/Genome_reference_files/hapmap3r2_CEU.CHB.JPT.YRI.founders.no-at-cg-snps_hg19_bad_snps_removed --out crypto_rep_clean_for_PCA
+./plink --bfile crypto_rep_clean.hapmap-snps-snps2 --bmerge ./Genome_reference_files/hapmap3r2_CEU.CHB.JPT.YRI.founders.no-at-cg-snps_hg19_bad_snps_removed --out crypto_rep_clean_for_PCA
 
 #### remove missing data here ### very important !!!!
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_clean_for_PCA --geno 0.05 --make-bed --out crypto_rep_clean_for_PCA_genopruned
+./plink --bfile crypto_rep_clean_for_PCA --geno 0.05 --make-bed --out crypto_rep_clean_for_PCA_genopruned
 
 #### GCTA_PCA_analysis
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/gcta_1.91.5beta/gcta64 --bfile crypto_rep_clean_for_PCA_genopruned --make-grm --autosome --thread-num 10 --out crypto_rep_clean_for_PCA_genopruned_matrix
+./gcta_1.91.5beta/gcta64 --bfile crypto_rep_clean_for_PCA_genopruned --make-grm --autosome --thread-num 10 --out crypto_rep_clean_for_PCA_genopruned_matrix
 
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/gcta_1.91.5beta/gcta64 --grm crypto_rep_clean_for_PCA_genopruned_matrix --pca 4 --out crypto_rep_clean_for_PCA_genopruned_matrix_HapMap_PCA
+./gcta_1.91.5beta/gcta64 --grm crypto_rep_clean_for_PCA_genopruned_matrix --pca 4 --out crypto_rep_clean_for_PCA_genopruned_matrix_HapMap_PCA
 
 
 #### Read in .csv file from GCTA package
@@ -342,13 +342,13 @@ plot(x = PCAdata_mod$V3, y = PCAdata_mod$V4, main = "PCA",  xlab = "PC1", ylab =
 exclude the HCB and the CEU population and re evaluate the PCA - also colour code the cases and controls differently.
 
 #### In plink retain only samples that we want
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_clean_for_PCA_genopruned --keep my_keepers.txt --make-bed --out crypto_rep_clean_for_PCA_genopruned_case_control
+./plink --bfile crypto_rep_clean_for_PCA_genopruned --keep my_keepers.txt --make-bed --out crypto_rep_clean_for_PCA_genopruned_case_control
 
 
 #### GCTA_PCA_analysis_again
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/gcta_1.91.5beta/gcta64 --bfile crypto_rep_clean_for_PCA_genopruned_case_control --make-grm --autosome --thread-num 10 --out crypto_rep_clean_for_PCA_genopruned_case_control_matrix
+./gcta_1.91.5beta/gcta64 --bfile crypto_rep_clean_for_PCA_genopruned_case_control --make-grm --autosome --thread-num 10 --out crypto_rep_clean_for_PCA_genopruned_case_control_matrix
 
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/gcta_1.91.5beta/gcta64 --grm crypto_rep_clean_for_PCA_genopruned_case_control_matrix --pca 4 --out crypto_rep_clean_for_PCA_genopruned_matrix_HapMap_PCA_case_control
+./gcta_1.91.5beta/gcta64 --grm crypto_rep_clean_for_PCA_genopruned_case_control_matrix --pca 4 --out crypto_rep_clean_for_PCA_genopruned_matrix_HapMap_PCA_case_control
 
 
 ```{r}
@@ -371,13 +371,13 @@ Cases and controls seem to cluster together, but there is a bit of a spread. Sho
 exclude all HapMap populations and re evaluate the PCA - also colour code the cases and controls differently.
 
 #### In plink retain only samples that we want
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_clean_for_PCA_genopruned --keep my_keepers1.txt --make-bed --out crypto_rep_clean_for_PCA_genopruned_case_control1
+./plink --bfile crypto_rep_clean_for_PCA_genopruned --keep my_keepers1.txt --make-bed --out crypto_rep_clean_for_PCA_genopruned_case_control1
 
 
 #### GCTA_PCA_analysis_again
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/gcta_1.91.5beta/gcta64 --bfile crypto_rep_clean_for_PCA_genopruned_case_control1 --make-grm --autosome --thread-num 10 --out crypto_rep_clean_for_PCA_genopruned_case_control1_matrix
+./gcta_1.91.5beta/gcta64 --bfile crypto_rep_clean_for_PCA_genopruned_case_control1 --make-grm --autosome --thread-num 10 --out crypto_rep_clean_for_PCA_genopruned_case_control1_matrix
 
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/gcta_1.91.5beta/gcta64 --grm crypto_rep_clean_for_PCA_genopruned_case_control1_matrix --pca 4 --out crypto_rep_clean_for_PCA_genopruned_matrix_HapMap_PCA_case_control1
+./gcta_1.91.5beta/gcta64 --grm crypto_rep_clean_for_PCA_genopruned_case_control1_matrix --pca 4 --out crypto_rep_clean_for_PCA_genopruned_matrix_HapMap_PCA_case_control1
 
 
 ```{r}
@@ -417,14 +417,14 @@ TMHP001 (case)
 
 
 ####prune_LD_SNPS
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_clean --indep-pairwise 50 5 0.5 --out crypto_rep_clean_prune
+./plink --bfile crypto_rep_clean --indep-pairwise 50 5 0.5 --out crypto_rep_clean_prune
 ####use only RS numbers here!
 awk '$1 ~ /^rs/' crypto_rep_clean_prune.prune.in > crypto_rep_clean_prune.prune.in1
 
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_clean --extract crypto_rep_clean_prune.prune.in1 --make-bed --out crypto_rep_clean_PRUNED
+./plink --bfile crypto_rep_clean --extract crypto_rep_clean_prune.prune.in1 --make-bed --out crypto_rep_clean_PRUNED
 
 ####IBD calculation
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_clean_PRUNED --genome --min 0.06 --out crypto_rep_clean_PRUNED_IBD
+./plink --bfile crypto_rep_clean_PRUNED --genome --min 0.06 --out crypto_rep_clean_PRUNED_IBD
 
 ```{r}
 Identity_by_descent <- as.data.frame(read.table("crypto_rep_clean_PRUNED_IBD.genome", header = TRUE))
@@ -446,7 +446,7 @@ one (or all) should be removed from the study
 
 #### Merge chromosome PLINK files from Schichina
 
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --merge-list files_to_merge.txt --make-bed --out original_crypto_series --allow-no-sex
+./plink --merge-list files_to_merge.txt --make-bed --out original_crypto_series --allow-no-sex
 
 #### first pass to merge with new dataset
 
@@ -454,7 +454,7 @@ crypto_rep_clean
 original_crypto_series
 
 
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_clean --bmerge original_crypto_series --make-bed --out phase1_2_merged
+./plink --bfile crypto_rep_clean --bmerge original_crypto_series --make-bed --out phase1_2_merged
 
 Error: 17512 variants with 3+ alleles present.
 * If you believe this is due to strand inconsistency, try --flip with phase1_2_merged-merge.missnp.
@@ -463,9 +463,8 @@ Error: 17512 variants with 3+ alleles present.
 
 To check for strand errors, you can do a 'trial flip'. Note the number of merge errors, use --flip with one of the source files and the .missnp file, and retry the merge. If most of the errors disappear, you probably do have strand errors, and you can use --flip on the second .missnp file to 'un-flip' any other errors. For example:
 
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_clean --flip phase1_2_merged-merge.missnp --make-bed --out crypto_rep_clean_trial
-
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile original_crypto_series --bmerge crypto_rep_clean_trial --make-bed --out merged_trial --allow-no-sex
+./plink --bfile crypto_rep_clean --flip phase1_2_merged-merge.missnp --make-bed --out crypto_rep_clean_trial
+./plink --bfile original_crypto_series --bmerge crypto_rep_clean_trial --make-bed --out merged_trial --allow-no-sex
 
 
 No further missnips were identified, but we need to look for C/G A/T errors with flipscan.
@@ -475,7 +474,7 @@ No further missnips were identified, but we need to look for C/G A/T errors with
 If the first .missnp file did contain strand errors, it probably did not contain all of them. After you're done with the basic merge, use --flip-scan to catch the A/T and C/G SNP flips that slipped through (using --make-pheno to temporarily redefine 'case' and 'control' if necessary):
 
 
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile original_crypto_series --flip-scan --out original_crypto_series
+./plink --bfile original_crypto_series --flip-scan --out original_crypto_series
 
 386688 MB RAM detected; reserving 193344 MB for main workspace.
 244330 variants loaded from .bim file.
@@ -495,7 +494,7 @@ are missing.)
 Report written to original_crypto_series.flipscan .
 
 
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_clean --flip-scan --out flipscan_crypto_clean
+./plink --bfile crypto_rep_clean --flip-scan --out flipscan_crypto_clean
 
 386688 MB RAM detected; reserving 193344 MB for main workspace.
 305569 variants loaded from .bim file.
@@ -518,36 +517,36 @@ As C/G and A/T snps may still pose a problem, identify the C/G and A/T snps and 
 (C_G_and_A_T_snp_consider_take away.txt)
 
 
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile original_crypto_series --bmerge crypto_rep_clean_trial --make-bed --out merged_tmp --allow-no-sex
+./plink --bfile original_crypto_series --bmerge crypto_rep_clean_trial --make-bed --out merged_tmp --allow-no-sex
 
 
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile merged_tmp --exclude C_G_and_A_T_snp_consider_take away.txt --make-bed --out crypto_merged_for_imputation  --allow-no-sex
+./plink --bfile merged_tmp --exclude C_G_and_A_T_snp_consider_take away.txt --make-bed --out crypto_merged_for_imputation  --allow-no-sex
 
 merged data should now bw fine and ready for analysis and imputation
 
 #### PCA for merged data
 
 #### extract_hapmap_snps
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_merged_for_imputation --extract /homes/athosnew/Genetics_Centre_Bioinformatics/resourses/Genome_reference_files/hapmap3r2_CEU.CHB.JPT.YRI.no-at-cg-snps.txt --make-bed --out crypto_rep_merged_clean.hapmap-snps
+./plink --bfile crypto_merged_for_imputation --extract ./Genome_reference_files/hapmap3r2_CEU.CHB.JPT.YRI.no-at-cg-snps.txt --make-bed --out crypto_rep_merged_clean.hapmap-snps
 
 #### remove_multi-alleleSNPS
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_merged_clean.hapmap-snps --bmerge /homes/athosnew/Genetics_Centre_Bioinformatics/resourses/Genome_reference_files/hapmap3r2_CEU.CHB.JPT.YRI.founders.no-at-cg-snps_hg19_bad_snps_removed
+./plink --bfile crypto_rep_merged_clean.hapmap-snps --bmerge ./Genome_reference_files/hapmap3r2_CEU.CHB.JPT.YRI.founders.no-at-cg-snps_hg19_bad_snps_removed
 
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_merged_clean.hapmap-snps --exclude plink.missnp --make-bed --out crypto_rep_merged_clean.hapmap-snps-snps2
+./plink --bfile crypto_rep_merged_clean.hapmap-snps --exclude plink.missnp --make-bed --out crypto_rep_merged_clean.hapmap-snps-snps2
 
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_merged_clean.hapmap-snps-snps2 --bmerge /homes/athosnew/Genetics_Centre_Bioinformatics/resourses/Genome_reference_files/hapmap3r2_CEU.CHB.JPT.YRI.founders.no-at-cg-snps_hg19_bad_snps_removed --out crypto_rep_merged_clean_for_PCA
+./plink --bfile crypto_rep_merged_clean.hapmap-snps-snps2 --bmerge ./Genome_reference_files/hapmap3r2_CEU.CHB.JPT.YRI.founders.no-at-cg-snps_hg19_bad_snps_removed --out crypto_rep_merged_clean_for_PCA
 
 #### remove missing data here ### very important !!!!
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_merged_clean_for_PCA --geno 0.05 --make-bed --out crypto_rep_merged_clean_for_PCA_genopruned
+./plink --bfile crypto_rep_merged_clean_for_PCA --geno 0.05 --make-bed --out crypto_rep_merged_clean_for_PCA_genopruned
 
 
 #### In plink retain only samples that we want
 /homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_merged_clean_for_PCA_genopruned --keep my_keepers.txt --make-bed --out crypto_rep_merged_clean_for_PCA_genopruned1
 
 #### GCTA_PCA_analysis
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/gcta_1.91.5beta/gcta64 --bfile crypto_rep_merged_clean_for_PCA_genopruned1 --make-grm --autosome --thread-num 10 --out crypto_rep_merged_clean_for_PCA_genopruned_matrix
+./gcta_1.91.5beta/gcta64 --bfile crypto_rep_merged_clean_for_PCA_genopruned1 --make-grm --autosome --thread-num 10 --out crypto_rep_merged_clean_for_PCA_genopruned_matrix
 
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/gcta_1.91.5beta/gcta64 --grm crypto_rep_merged_clean_for_PCA_genopruned_matrix --pca 4 --out crypto_rep_merged_clean_for_PCA_genopruned_matrix_HapMap_PCA
+./gcta_1.91.5beta/gcta64 --grm crypto_rep_merged_clean_for_PCA_genopruned_matrix --pca 4 --out crypto_rep_merged_clean_for_PCA_genopruned_matrix_HapMap_PCA
 
 #### Read in .csv file from GCTA package
 ```{r}
@@ -567,9 +566,9 @@ legend(x="bottom", legend = c("batch1", "batch2", "Yoruba"), col = c("red", "gre
 /homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_merged_clean_for_PCA --geno 0.05 --make-bed --out crypto_rep_merged_clean_for_PCA_genopruned
 
 #### GCTA_PCA_analysis
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/gcta_1.91.5beta/gcta64 --bfile crypto_rep_merged_clean_for_PCA_genopruned --make-grm --autosome --thread-num 10 --out crypto_rep_merged_clean_for_PCA_genopruned_matrix
+./gcta_1.91.5beta/gcta64 --bfile crypto_rep_merged_clean_for_PCA_genopruned --make-grm --autosome --thread-num 10 --out crypto_rep_merged_clean_for_PCA_genopruned_matrix
 
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/gcta_1.91.5beta/gcta64 --grm crypto_rep_merged_clean_for_PCA_genopruned_matrix --pca 4 --out crypto_rep_merged_clean_for_PCA_genopruned_matrix_HapMap_PCA_all
+./gcta_1.91.5beta/gcta64 --grm crypto_rep_merged_clean_for_PCA_genopruned_matrix --pca 4 --out crypto_rep_merged_clean_for_PCA_genopruned_matrix_HapMap_PCA_all
 
 #### Read in .csv file from GCTA package
 ```{r}
@@ -585,16 +584,16 @@ plot(x = PCAdata_all_merged_allpops$V3, y = PCAdata_all_merged_allpops$V4,  xlab
 
 
 #### remove missing data here ### very important !!!!
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_merged_clean_for_PCA --geno 0.05 --make-bed --out crypto_rep_merged_clean_for_PCA_genopruned
+./plink --bfile crypto_rep_merged_clean_for_PCA --geno 0.05 --make-bed --out crypto_rep_merged_clean_for_PCA_genopruned
 
 
 #### In plink retain only samples that we want
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_merged_clean_for_PCA_genopruned --keep my_keepers1.txt --make-bed --out crypto_rep_merged_clean_for_PCA_genopruned2
+./plink --bfile crypto_rep_merged_clean_for_PCA_genopruned --keep my_keepers1.txt --make-bed --out crypto_rep_merged_clean_for_PCA_genopruned2
 
 #### GCTA_PCA_analysis
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/gcta_1.91.5beta/gcta64 --bfile crypto_rep_merged_clean_for_PCA_genopruned2 --make-grm --autosome --thread-num 10 --out crypto_rep_merged_clean_for_PCA_genopruned_matrix2
+./gcta_1.91.5beta/gcta64 --bfile crypto_rep_merged_clean_for_PCA_genopruned2 --make-grm --autosome --thread-num 10 --out crypto_rep_merged_clean_for_PCA_genopruned_matrix2
 
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/gcta_1.91.5beta/gcta64 --grm crypto_rep_merged_clean_for_PCA_genopruned_matrix2 --pca 4 --out crypto_rep_merged_clean_for_PCA_genopruned_matrix_HapMap_PCA2
+./gcta_1.91.5beta/gcta64 --grm crypto_rep_merged_clean_for_PCA_genopruned_matrix2 --pca 4 --out crypto_rep_merged_clean_for_PCA_genopruned_matrix_HapMap_PCA2
 
 
 ```{r}
@@ -618,31 +617,15 @@ HJHB005
 HJHB006
 TMHP001
 
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_rep_clean --remove myRemovals.txt --make-bed --out crypto_replication_for_association
+./plink --bfile crypto_rep_clean --remove myRemovals.txt --make-bed --out crypto_replication_for_association
 
-191 people (99 males, 92 females) loaded from .fam.
-191 phenotype values loaded from .fam.
---remove: 185 people remaining.
-Using 1 thread (no multithreaded calculations invoked).
-Before main variant filters, 185 founders and 0 nonfounders present.
-Calculating allele frequencies... done.
-Warning: 7645 het. haploid genotypes present (see
-crypto_replication_for_association.hh ); many commands treat these as missing.
-Total genotyping rate in remaining samples is 0.998502.
-305569 variants and 185 people pass filters and QC.
-Among remaining phenotypes, 59 are cases and 126 are controls.
---make-bed to crypto_replication_for_association.bed +
-crypto_replication_for_association.bim + crypto_replication_for_association.fam
-... done.
+./plink --bfile crypto_replication_for_association --assoc --out association_reults 
 
 
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_replication_for_association --assoc --out association_reults 
+./plink --bfile crypto_replication_for_association --model --out association_reults_models 
 
 
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_replication_for_association --model --out association_reults_models 
-
-
-/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink --bfile crypto_replication_for_association --assoc --adjust --qq-plot --out crypto_replication_for_association_forQQ
+./plink --bfile crypto_replication_for_association --assoc --adjust --qq-plot --out crypto_replication_for_association_forQQ
 
 
 
