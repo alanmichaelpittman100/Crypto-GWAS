@@ -1,15 +1,15 @@
 #!/bin/bash
 
 
-vcftools="/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/vcftools/bin/vcftools"
-plink="/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/plink_linux_x86_64/plink"
-tabix="/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/tabix-0.2.6/tabix"
-bgzip="/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/tabix-0.2.6/bgzip"
-vcf_concat="/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/vcftools/perl/vcf-concat"
-bgzip="/homes/athosnew/Genetics_Centre_Bioinformatics/resourses/tabix-0.2.6/bgzip"
+vcftools=/resourses/vcftools/bin/vcftools"
+plink="/resourses/plink_linux_x86_64/plink"
+tabix="/resourses/tabix-0.2.6/tabix"
+bgzip="/resourses/tabix-0.2.6/bgzip"
+vcf_concat="/resourses/vcftools/perl/vcf-concat"
+bgzip="/resourses/tabix-0.2.6/bgzip"
 
-imputedVCFsDir="/homes/athosnew/Alan/Alan_Bioinformatics_Projects/imputation/imputed_files_from_Michigan_Imputation_Server_crypto_b2_clean/"
-OutDirDir="/homes/athosnew/Alan/crypto_GWAS/Take2/b2_imputed_vcfs_HRC"
+imputedVCFsDir="/imputed_files_from_Michigan_Imputation_Server_crypto_b2/"
+OutDirDir="/b2_imputed_vcfs_HRC"
 
 
 chrs="22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1"
